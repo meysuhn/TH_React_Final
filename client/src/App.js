@@ -9,18 +9,21 @@ class App extends Component {
   componentDidMount() {
     axios.get('localhost:5000/api/courses')
       .then(function (response) {
+        console.log(1);
         // handle success
         console.log(response);
       })
       .catch(function (error) {
+        console.log(2);
         // handle error
         console.log(error);
       })
       .then(function () {
+        console.log(3);
         // always executed
       });
   }
-  
+
   render() {
     return (
       <div className="App">

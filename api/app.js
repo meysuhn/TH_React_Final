@@ -2,7 +2,7 @@
 
 // load modules
 const express = require('express');
-var cors = require('cors'); // Cross Origin (for client and API to communicate)
+const cors = require('cors'); // Cross Origin (for client and API to communicate)
 const morgan = require('morgan');
 
 const jsonParser = require('body-parser').json; // a function that will return middleware that we can add to our app
@@ -18,7 +18,7 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 
-
+app.use(cors()); // This makes cors available to all routes.
 
 
 
@@ -37,8 +37,6 @@ MIDDLEWARE
 ----------------------------------------------------------------------*/
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
-
-app.use(cors()); // This makes cors available to all routes.
 
 // Middleware to accept json data coming into our routes.
 // When the app receives a request this middleware will parse request's body as json and make it accessible from req.body property.
@@ -86,7 +84,8 @@ DATABASE CONNECTION
 // Connect to Mongo db with Mongoose
   // ('connect to mongodb on localhost 27017, the default port for mongodb')
   // fsjstd-restapi is the name of the mongo data store, the name of the databse for the c11b site.
-mongoose.connect('mongodb://localhost:27017/fsjstd-restapi', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/fsjstd-restapi', { useNewUrlParser: true, autoIndex: false });
+// { useNewUrlParser: true, autoIndex: false } are to prevent deprication errors.
 
 const db = mongoose.connection; // represents the connection to mongodb
 
