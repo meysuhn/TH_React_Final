@@ -20,7 +20,7 @@ const app = express();
 
 app.use(cors()); // This makes cors available to all routes.
 
-
+app.options('*', cors())
 
 /*---------------------------------------------------------------------
 Friendly greeting for the root route (localhost:5000/)
