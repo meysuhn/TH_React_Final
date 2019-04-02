@@ -1,5 +1,5 @@
 import React from 'react';
-
+// import { NavLink } from 'react-router-dom';
 
 const Header = (props) => {
   return (
@@ -14,6 +14,13 @@ const Header = (props) => {
     </React.Fragment>
   )
 }
+
+// if Logged in do X
+// How to check if they're actually logged in though?
+
+
+
+// Else do Y
 
 
 export default Header;

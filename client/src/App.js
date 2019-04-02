@@ -1,49 +1,48 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import axios from 'axios';
+// import axios from 'axios';
 // import './App.css'; // Original create-react-app
-import './global.css';
+// import './global.css';
+
+import {
+  BrowserRouter,
+  Route,
+  Switch
+} from 'react-router-dom';
 
 // Components
 import Header from './components/Header';
 
+import Catalogue from './components/Catalogue';
 import CourseDetail from './components/Course-detail';
 import CreateCourse from './components/Create-course';
-import Error from './components/Error';
-import Forbidden from './components/Forbidden';
-import Catalogue from './components/Catalogue';
-import NotFound from './components/Not-found';
 import SignIn from './components/Sign-in';
 import SignUp from './components/Sign-up';
+// import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
 
 
-class App extends Component {
+// import NotFound from './components/Not-found';
+// import Error from './components/Error';
+// import Forbidden from './components/Forbidden';
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/api/courses')
-      .then(function (response) {
-        console.log(1);
-        // handle success
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(2);
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        console.log(3);
-        // always executed
-      });
-  }
+class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header/>
-        <UpdateCourse/>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Header/>
+          <Switch>
+            <Route exact path="/" component={Catalogue} />
+            <Route exact path="/courses/:id" component={CourseDetail} />
+            <Route exact path="/courses/:id/update" component={UpdateCourse} />
+            <Route exact path="/courses/create" component={CreateCourse} />
+            <Route exact path="/signin" component={SignIn} />
+            {/*<Route exact path="/signout" component={SignOut} />*/}
+            <Route exact path="/signup" component={SignUp} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 }
