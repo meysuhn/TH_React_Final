@@ -19,13 +19,7 @@ class CourseDetail extends React.Component {
       .then( (response) => {
         // handle success
         this.setState({course:response.data})
-        console.log(this.state.course);
-        // console.log(this.state.course._id)
-        // console.log(this.state.course.description)
-        // console.log(this.state.course.estimatedTime)
-        // console.log(this.state.course.materialsNeeded)
-        // console.log(this.state.course.user.firstName)
-        // console.log(this.state.course.user.lastName)
+        // console.log(this.state.course);
       })
       .catch(function (error) {
         // handle error
@@ -46,7 +40,7 @@ class CourseDetail extends React.Component {
               </div>
             )
     } else {
-      console.log("empty");
+      // console.log("empty");
     }
   }
 
@@ -59,7 +53,7 @@ class CourseDetail extends React.Component {
               </div>
             )
     } else {
-      console.log("empty");
+      // console.log("empty");
     }
   }
 
@@ -84,38 +78,56 @@ class CourseDetail extends React.Component {
   }
 
 
-displayCourseMaterials(){
-  if(this.state.course) {
-  if(this.state.course.estimatedTime) {
-          return (
-
-            <li className="course--stats--list--item">
-              <h4>Materials Needed</h4>
-              <ReactMarkdown source={this.state.course.materialsNeeded}/>
-            </li>
-
-          )
-  } else {
-    return (
-      <li className="course--stats--list--item">
-        <h4>Materials Needed</h4>
-        <h3>No materials required</h3>
-      </li>
-    )
+  displayCourseMaterials(){
+    if(this.state.course) {
+      if(this.state.course.estimatedTime) {
+        return (
+          <li className="course--stats--list--item">
+            <h4>Materials Needed</h4>
+            <ReactMarkdown source={this.state.course.materialsNeeded}/>
+          </li>
+        )
+      } else {
+        return (
+          <li className="course--stats--list--item">
+            <h4>Materials Needed</h4>
+            <h3>No materials required</h3>
+          </li>
+        )
+      }
+    }
   }
-}
-}
 
-// This feels like a cheat? I should be able to template literal inside the render() but it wouldn't read the state.
-displayUpdateButton() {
-  if(this.state.course) {
-      return (
-        <NavLink className="button" to={`/courses/${this.state.course._id}/update`}>Update Course</NavLink>
-      )
-  } else {
-    console.log("empty");
+  displayUpdateButton() {
+    if(this.state.course) {
+        return (
+          <NavLink className="button" to={`/courses/${this.state.course._id}/update`}>Update Course</NavLink>
+        )
+    } else {
+      // console.log("empty");
+    }
   }
-}
+
+  deleteCourse(event) {
+      console.log("hi");
+
+      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+      // Send a DELETE request
+      axios({
+        method: 'delete',
+        url: `http://localhost:5000/api/courses/${params.id}`,
+      }).then( (response) => {
+        // handle success
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  }
+
 
 
   render() {
@@ -124,9 +136,8 @@ displayUpdateButton() {
       <div className="actions--bar">
         <div className="bounds">
           <div className="grid-100"><span>
-
           {this.displayUpdateButton()}
-          <a className="button" href="#">Delete Course</a>
+          <NavLink className="button" to='/' onClick={this.deleteCourse.bind(this)}>Delete Course</NavLink>
           </span>
           <NavLink className="button button-secondary" to='/'>Return to List</NavLink></div>
         </div>

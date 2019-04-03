@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
-// import './App.css'; // Original create-react-app
-// import './global.css';
+import './Global.css'; // Original create-react-app
 
 import {
   BrowserRouter,
@@ -33,7 +31,7 @@ class App extends Component {
         <div className="App">
           <Header/>
           <Switch>
-            <Route exact path="/" component={Catalogue} />
+            <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
             <Route exact path="/courses/:id" component={CourseDetail} />
             <Route exact path="/courses/:id/update" component={UpdateCourse} />
             <Route exact path="/courses/create" component={CreateCourse} />

@@ -1,33 +1,153 @@
 import React from 'react';
+import axios from 'axios';
+
 
 
 
 class UpdateCourse extends React.Component {
+
+// Initialise local state:
+// Is writing them all out like this necessary? How is line 29 actually mapping to this or is it not?
+// Yes, there is something going on here. You had to add .user for it to populate state with user data.
+// this.setState({course:response.data})
+// this.setState({user:response.data.user})
+  state = {
+    course: {
+    title: '',
+    description: '',
+    estimatedTime: '',
+    materialsNeeded: ''
+    },
+    user: {
+      id: '',
+      firstName: '',
+      lastName: ''
+    },
+  };
+
+    componentDidMount() {
+      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+      axios.get(`http://localhost:5000/api/courses/${params.id}`)
+        .then( (response) => {
+          // handle success
+          this.setState({course:response.data})
+          this.setState({user:response.data.user})
+          console.log(this.state.course);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    }
+
+    // Individual event handlers for each input change
+    // Spread (...) over the prevState object to get all its properties,
+    // then overwrite only those properties stated with the ones we're passing. new data
+    // prevState https://gist.github.com/klikstermkd/e56e120ad9559aa44dfeaa3b13cfb25d
+    titleChange = (event) => { // when there's a change pass in the event object
+        const value = event.target.value;
+        this.setState( (prevState) =>(
+            {course: {...prevState.course, title:value}}
+        ));
+    }
+
+    descriptionChange = (event) => {
+        const value = event.target.value;
+        this.setState( (prevState) =>(
+            {course: {...prevState.course, description:value}}
+        ));
+    }
+    estimatedTimeChange = (event) => {
+        const value = event.target.value;
+        this.setState( (prevState) =>(
+            {course: {...prevState.course, estimatedTime:value}}
+        ));
+
+    }
+    materialsNeededChange = (event) => {
+        const value = event.target.value;
+        this.setState( (prevState) =>(
+            {course: {...prevState.course, materialsNeeded:value}}
+        ));
+    }
+
+    // Define event handlers as a method on the class (using two different approaches)
+    handleSubmit(event) {
+      event.preventDefault();
+      console.log(this.state);
+
+
+      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+      // Send a POST request
+      axios({
+        method: 'put',
+        url: `http://localhost:5000/api/courses/${params.id}`,
+        data: {
+          "title":this.state.course.title,
+          "description":this.state.course.description,
+          "user":this.state.user._id,
+          "materialsNeeded":this.props.materialsNeeded,
+          "estimatedTime":this.props.estimatedTime
+        }
+      }).then( (response) => {
+        // handle success
+        this.setState({course:response.data})
+        console.log(this.state.course);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+
+    }
+
+    handleCancel = event => {
+      event.preventDefault();
+      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+
+          const { history } = this.props;
+          // const { course } = this.state;
+          history.push(`/courses/${params.id}`)
+        }
+
   render() {
     return (
       <div className="bounds course--detail">
           <h1>Update Course</h1>
           <div>
-            <form>
+            <form onClick={this.handleSubmit.bind(this)}>
               <div className="grid-66">
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>
-                  <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..."
-                      value="Build a Basic Bookcase"/></div>
-                  <p>By Joe Smith</p>
+                  <div>
+                  <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  className="input-title course--title--input"
+                  placeholder="Course title..."
+                  value={this.state.course.title}
+                  onChange={this.titleChange}/>
+                  </div>
+                  <p>By {this.state.user.firstName} {this.state.user.lastName}</p>
                 </div>
                 <div className="course--description">
-                  <div><textarea id="description" name="description" className="" placeholder="Course description...">High-end furniture projects are great to dream about. But unless you have a well-equipped shop and some serious woodworking experience to draw on, it can be difficult to turn the dream into a reality.
-
-  Not every piece of furniture needs to be a museum showpiece, though. Often a simple design does the job just as well and the experience gained in completing it goes a long way toward making the next project even better.
-
-  Our pine bookcase, for example, features simple construction and it's designed to be built with basic woodworking tools. Yet, the finished project is a worthy and useful addition to any room of the house. While it's meant to rest on the floor, you can convert the bookcase to a wall-mounted storage unit by leaving off the baseboard. You can secure the cabinet to the wall by screwing through the cabinet cleats into the wall studs.
-
-  We made the case out of materials available at most building-supply dealers and lumberyards, including 1/2 x 3/4-in. parting strip, 1 x 2, 1 x 4 and 1 x 10 common pine and 1/4-in.-thick lauan plywood. Assembly is quick and easy with glue and nails, and when you're done with construction you have the option of a painted or clear finish.
-
-  As for basic tools, you'll need a portable circular saw, hammer, block plane, combination square, tape measure, metal rule, two clamps, nail set and putty knife. Other supplies include glue, nails, sandpaper, wood filler and varnish or paint and shellac.
-
-  The specifications that follow will produce a bookcase with overall dimensions of 10 3/4 in. deep x 34 in. wide x 48 in. tall. While the depth of the case is directly tied to the 1 x 10 stock, you can vary the height, width and shelf spacing to suit your needs. Keep in mind, though, that extending the width of the cabinet may require the addition of central shelf supports.</textarea></div>
+                  <div>
+                  <textarea
+                  id="description"
+                  name="description"
+                  className=""
+                  placeholder="Course description..."
+                  value={this.state.course.description}
+                  onChange={this.descriptionChange}
+                  >
+                  </textarea></div>
                 </div>
               </div>
               <div className="grid-25 grid-right">
@@ -35,27 +155,37 @@ class UpdateCourse extends React.Component {
                   <ul className="course--stats--list">
                     <li className="course--stats--list--item">
                       <h4>Estimated Time</h4>
-                      <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input"
-                          placeholder="Hours" value="14 hours"/></div>
+                      <div>
+                        <input
+                          id="estimatedTime"
+                          name="estimatedTime"
+                          type="text"
+                          className="course--time--input"
+                          placeholder="Hours"
+                          value={this.state.course.estimatedTime}
+                          onChange={this.estimatedTimeChange}
+                          />
+                      </div>
                     </li>
                     <li className="course--stats--list--item">
                       <h4>Materials Needed</h4>
-                      <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials...">* 1/2 x 3/4 inch parting strip
-  * 1 x 2 common pine
-  * 1 x 4 common pine
-  * 1 x 10 common pine
-  * 1/4 inch thick lauan plywood
-  * Finishing Nails
-  * Sandpaper
-  * Wood Glue
-  * Wood Filler
-  * Minwax Oil Based Polyurethane
-  </textarea></div>
+                      <div>
+                        <textarea
+                        id="materialsNeeded"
+                        name="materialsNeeded"
+                        className=""
+                        placeholder="List materials..."
+                        value={this.state.course.materialsNeeded}
+                        onChange={this.materialsNeededChange}
+                        >
+                      </textarea></div>
                     </li>
                   </ul>
                 </div>
               </div>
-              <div className="grid-100 pad-bottom"><button className="button" type="submit">Update Course</button><button className="button button-secondary" onclick="event.preventDefault(); location.href='course-detail.html';">Cancel</button></div>
+              <div className="grid-100 pad-bottom">
+              <button className="button" type="submit">Update Course</button>
+              <button className="button button-secondary" onClick={this.handleCancel.bind(this)}>Cancel</button></div>
             </form>
           </div>
         </div>
