@@ -27,8 +27,8 @@ Friendly greeting for the root route (localhost:5000/)
 ----------------------------------------------------------------------*/
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Course Review API.',
-    text: 'To view full course details and leave a review please sign in:',
+    message: 'Welcome to the Course  API.',
+    text: 'To view full course details please sign in:',
   });
 });
 

@@ -91,7 +91,11 @@ class UpdateCourse extends React.Component {
           "user":this.state.user._id,
           "materialsNeeded":this.props.materialsNeeded,
           "estimatedTime":this.props.estimatedTime
-        }
+        },
+        // auth: { // axios basic auth header
+        //     username: userInput.email,
+        //     password: userInput.password
+        // }
       }).then( (response) => {
         // handle success
         this.setState({course:response.data})
@@ -184,8 +188,9 @@ class UpdateCourse extends React.Component {
                 </div>
               </div>
               <div className="grid-100 pad-bottom">
-              <button className="button" type="submit">Update Course</button>
-              <button className="button button-secondary" onClick={this.handleCancel.bind(this)}>Cancel</button></div>
+                <button className="button" type="submit">Update Course</button>
+                <button className="button button-secondary" onClick={this.handleCancel.bind(this)}>Cancel</button>
+              </div>
             </form>
           </div>
         </div>

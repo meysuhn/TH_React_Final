@@ -30,6 +30,15 @@ class CourseDetail extends React.Component {
       });
   }
 
+  // I prefer this pattern. Refine the below later.
+  // detectChange = event => {
+  //   this.setState({
+  //     [event.target.name]: event.target.value
+  //   })
+  // }
+
+  // onChange={event => this.detectChange(e)}
+
   displayCourseDetail(){
     if(this.state.course) {
             return (
