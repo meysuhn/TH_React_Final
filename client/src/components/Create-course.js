@@ -62,6 +62,7 @@ handleCancel = event => {
 handleSubmit(event) {
   event.preventDefault();
   console.log(this.state);
+  console.log(this.props);
   console.log("POST fired");
 
 
@@ -70,13 +71,22 @@ handleSubmit(event) {
     method: 'post',
     url: 'http://localhost:5000/api/courses/',
     data: { // You need to pass in the user too.
-      "title":this.state.course.title,
-      "description":this.state.course.description,
-      "user":this.state.user._id,
-      "materialsNeeded":this.props.materialsNeeded,
-      "estimatedTime":this.props.estimatedTime,
+      title:this.state.course.title,
+      description:this.state.course.description,
+      materialsNeeded:this.state.course.materialsNeeded,
+      estimatedTime:this.state.course.estimatedTime,
+      user:this.state.user._id,
     },
-    auth: this.state.auth
+    auth: {
+      username: this.props.signIn.auth.username,
+      password: this.props.signIn.auth.password
+    }
+
+    // User creds not being passed in
+    // I think it's the API that asigns the user to the new course...
+
+    // Are the data details overwriting state? NO. But then that state is only updated on a submit.
+    // You're forming that basis of a question here. Good.
 
 
   }).then( (response) => {
@@ -109,7 +119,7 @@ handleSubmit(event) {
                 </ul>
               </div>
             </div>
-            <form onClick={this.handleSubmit.bind(this)}>
+            <form>
               <div className="grid-66">
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>
@@ -170,7 +180,7 @@ handleSubmit(event) {
                 </div>
               </div>
               <div className="grid-100 pad-bottom">
-                <button className="button" type="submit">Create Course</button>
+                <button className="button" type="submit" onClick={this.handleSubmit.bind(this)}>Create Course</button>
                 <button className="button button-secondary" onClick={this.handleCancel.bind(this)}>Cancel</button>
               </div>
             </form>

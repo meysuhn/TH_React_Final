@@ -19,6 +19,9 @@ import SignUp from './components/Sign-up';
 // import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
 
+// const { history } = this.props;
+
+
 // Import Context provider
 // import { Provider } from './components/Context/auth.js';
 // if file was name 'index' you could leave off the final file name as Node will always default to look for an index.js if no file name provided.
@@ -43,7 +46,10 @@ class App extends Component {
         // password: '',
         isloggedin: false
       },
-      auth: null,
+      auth: {
+        username: '',
+        password: ''
+      }
     };
   }
 
@@ -71,7 +77,7 @@ class App extends Component {
       user.isloggedin = true;
       this.setState({user})
       this.setState({auth: response.config.auth})
-      //  this.props.history.push('/'); // This doesn't work.
+      // history.push('/'); // This doesn't work.
 
 
       })
