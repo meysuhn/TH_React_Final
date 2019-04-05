@@ -13,6 +13,8 @@ class SignIn extends React.Component {
     },
   };
 
+
+
   emailChange = (event) => { // when there's a change pass in the event object
       const value = event.target.value;
       this.setState( (prevState) =>(
@@ -39,11 +41,12 @@ class SignIn extends React.Component {
   handleSubmit = event => {
 
     console.log(this.state)
+    console.log(this.props)
     event.preventDefault();
     let userInput = {"email": this.state.user.email, "password": this.state.user.password}
     console.log(userInput)
     this.props.signIn(userInput)
-    
+
 
     // Then user needs to be redirected to catalouge after sign in...where is that done?
   };

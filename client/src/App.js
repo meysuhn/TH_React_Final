@@ -16,8 +16,9 @@ import CourseDetail from './components/Course-detail';
 import CreateCourse from './components/Create-course';
 import SignIn from './components/Sign-in';
 import SignUp from './components/Sign-up';
-// import SignOut from './components/Sign-out'; // to be built
+import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
+
 
 // const { history } = this.props;
 
@@ -49,9 +50,10 @@ class App extends Component {
       auth: {
         username: '',
         password: ''
-      }
+      },
     };
   }
+
 
 
   signIn = (userInput) => {
@@ -75,9 +77,10 @@ class App extends Component {
       user.email = response.data.emailAddress;
       user.password = response.config.auth.password;
       user.isloggedin = true;
+      user.daFuck = true;
       this.setState({user})
       this.setState({auth: response.config.auth})
-      // history.push('/'); // This doesn't work.
+      // this.props.history.push('/'); // This doesn't work.
 
 
       })
@@ -106,8 +109,38 @@ class App extends Component {
     //   // Also need some sort of redirect on here
     // }
 
-// <Provider value={signedInData}> {/* Wrap around app to make data avilable everywhere. */}
-//   </Provider>
+
+
+// to quickly paste in
+  // Header
+    // <Header userData={this.state}/>
+
+  // Catalogue
+    // <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
+
+  // CreateCourse
+    // <Route exact path="/courses/create" component={CreateCourse} />
+    // <Route exact path="/courses/create" component={() => <CreateCourse signIn={this.state}/>}  />
+
+  // CourseDetail
+    // <Route exact path="/courses/:id" component={CourseDetail} />
+    // <Route exact path="/courses/:id" component={() => <CourseDetail stuff={this.state}/>}  />
+
+  // UpdateCourse
+    // <Route exact path="/courses/:id/update" component={UpdateCourse} />
+    // <Route exact path="/courses/:id/update" component={() => <UpdateCourse props={this.state}/>}  />
+
+  // Sign in
+    // <Route exact path="/signin" component={() => <SignIn  signIn={this.signIn}/>} />
+
+  // Sign out
+
+  // Sign up
+
+
+
+
+
   render() {
     return (
       <BrowserRouter>
@@ -115,11 +148,33 @@ class App extends Component {
           <Header userData={this.state}/>
           <Switch>
             <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
-            <Route exact path="/courses/create" component={() => <CreateCourse signIn={this.state}/>}  />
-            <Route exact path="/courses/:id" component={CourseDetail} />
-            <Route exact path="/courses/:id/update" component={UpdateCourse} />
-            <Route exact path="/signin" component={() => <SignIn  signIn={this.signIn}/>} /> {/* Make signIn method available to SignIn component.*/}
+
+            <Route
+              exact path="/courses/create"
+              render={(props) => (<CreateCourse {...this.props} {...props} {...this.state}/>)}
+            />
+
+            <Route
+              exact path="/courses/:id"
+              render={(props) => (<CourseDetail {...this.props} {...props} {...this.state}/>)}
+            />
+
+            {/* <Route exact path="/courses/:id/update" component={UpdateCourse} /> */}
+            <Route
+              exact path="/courses/:id/update"
+              render={(props) => (<UpdateCourse {...this.props} {...props} {...this.state}/>)}
+            />
+
+
+
+            {/* If I use the pattern below I lose the match object. Without it tho I can't access auth data. */}
+            {/* <Route exact path="/courses/:id/update" component={() => <UpdateCourse signIn={this.state}/>} /> */}
+            {/* Make signIn method available to SignIn component.*/}
+
+            <Route exact path="/signin" component={() => <SignIn  signIn={this.signIn}/>} />
             {/*<Route exact path="/signout" component={SignOut} />*/}
+            <Route exact path="/signout" component={() => <SignOut signOut={this.signOut}/>} />
+
             <Route exact path="/signup" component={SignUp} />
           </Switch>
         </div>
@@ -128,4 +183,11 @@ class App extends Component {
   }
 }
 
+// <Route
+//   path={`${this.props.match.url}view/:postId`}
+//   render={(props) => (
+// <Single {...this.props} {...props} />
+// )} />
+
+// <Route exact path="/signin" component={SignIn} />
 export default App;

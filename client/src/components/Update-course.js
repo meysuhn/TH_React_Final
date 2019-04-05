@@ -27,7 +27,9 @@ class UpdateCourse extends React.Component {
 
     componentDidMount() {
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+      console.log(this)
       axios.get(`http://localhost:5000/api/courses/${params.id}`)
+
         .then( (response) => {
           // handle success
           this.setState({course:response.data})
@@ -78,7 +80,25 @@ class UpdateCourse extends React.Component {
     handleSubmit(event) {
       event.preventDefault();
       console.log(this.state);
+      console.log(this.props);
+      console.log("PUT fired");
 
+
+
+      // axios({
+      //   method: 'post',
+      //   url: 'http://localhost:5000/api/courses/',
+      //   data: { // You need to pass in the user too.
+      //     title:this.state.course.title,
+      //     description:this.state.course.description,
+      //     materialsNeeded:this.state.course.materialsNeeded,
+      //     estimatedTime:this.state.course.estimatedTime,
+      //     user:this.state.user._id,
+      //   },
+      //   auth: {
+      //     username: this.props.signIn.auth.username,
+      //     password: this.props.signIn.auth.password
+      //   }
 
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a POST request
@@ -92,6 +112,10 @@ class UpdateCourse extends React.Component {
           "materialsNeeded":this.props.materialsNeeded,
           "estimatedTime":this.props.estimatedTime
         },
+        auth: {
+          username: this.props.auth.username,
+          password: this.props.auth.password
+        }
         // auth: { // axios basic auth header
         //     username: userInput.email,
         //     password: userInput.password
@@ -100,6 +124,7 @@ class UpdateCourse extends React.Component {
         // handle success
         this.setState({course:response.data})
         console.log(this.state.course);
+        this.props.history.push('/courses/') // return the user to the courses catalogue page
       })
       .catch(function (error) {
         // handle error
@@ -125,7 +150,7 @@ class UpdateCourse extends React.Component {
       <div className="bounds course--detail">
           <h1>Update Course</h1>
           <div>
-            <form onClick={this.handleSubmit.bind(this)}>
+            <form onSubmit={this.handleSubmit.bind(this)}>
               <div className="grid-66">
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>
@@ -136,7 +161,7 @@ class UpdateCourse extends React.Component {
                   type="text"
                   className="input-title course--title--input"
                   placeholder="Course title..."
-                  value={this.state.course.title}
+                  value={this.state.course.title || ''}
                   onChange={this.titleChange}/>
                   </div>
                   <p>By {this.state.user.firstName} {this.state.user.lastName}</p>
@@ -148,7 +173,7 @@ class UpdateCourse extends React.Component {
                   name="description"
                   className=""
                   placeholder="Course description..."
-                  value={this.state.course.description}
+                  value={this.state.course.description || ''}
                   onChange={this.descriptionChange}
                   >
                   </textarea></div>
@@ -166,7 +191,7 @@ class UpdateCourse extends React.Component {
                           type="text"
                           className="course--time--input"
                           placeholder="Hours"
-                          value={this.state.course.estimatedTime}
+                          value={this.state.course.estimatedTime || ''}
                           onChange={this.estimatedTimeChange}
                           />
                       </div>
@@ -179,7 +204,7 @@ class UpdateCourse extends React.Component {
                         name="materialsNeeded"
                         className=""
                         placeholder="List materials..."
-                        value={this.state.course.materialsNeeded}
+                        value={this.state.course.materialsNeeded || ''}
                         onChange={this.materialsNeededChange}
                         >
                       </textarea></div>

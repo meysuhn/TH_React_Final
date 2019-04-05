@@ -10,8 +10,16 @@ import { NavLink } from 'react-router-dom';
 class CourseDetail extends React.Component {
 
   state = {
-      course: null,
+      course: '',
+      user: {
+        isLoggedIn: false
+      },
+      // isLoggedIn: false
     };
+
+    // state.isLoggedIn will work
+    // state.user.isLoggedIn does not work. React will only go one deep.
+    // Might you need to play with your state structure?
 
   componentDidMount() {
     const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
@@ -19,7 +27,7 @@ class CourseDetail extends React.Component {
       .then( (response) => {
         // handle success
         this.setState({course:response.data})
-        // console.log(this.state.course);
+        this.setState({courseId: this.state.course.user._id});
       })
       .catch(function (error) {
         // handle error
@@ -107,15 +115,6 @@ class CourseDetail extends React.Component {
     }
   }
 
-  displayUpdateButton() {
-    if(this.state.course) {
-        return (
-          <NavLink className="button" to={`/courses/${this.state.course._id}/update`}>Update Course</NavLink>
-        )
-    } else {
-      // console.log("empty");
-    }
-  }
 
   deleteCourse(event) {
       console.log("hi");
@@ -138,6 +137,29 @@ class CourseDetail extends React.Component {
   }
 
 
+// Restrict access to course update and delete button if no user or user is not owner.
+  displayUpdateButton() {
+    let courseId = this.state.courseId;
+    let userProp = this.props.user;
+    if(userProp.isloggedin === true) {
+      if(userProp.id === courseId) {
+        console.log(userProp.id);
+        console.log(courseId);
+        console.log("OK");
+          return (
+            <React.Fragment>
+              <NavLink className="button" to='/' onClick={this.deleteCourse.bind(this)}>Delete Course</NavLink>
+              <NavLink className="button" to={`/courses/${this.state.course._id}/update`}>Update Course</NavLink>
+            </React.Fragment>
+          )
+      } else {
+        console.log("Correct error. Logged in user != course owner ");
+      }
+    } else {
+      console.log("No logged in user");
+    }
+  }
+
 
   render() {
     return (
@@ -146,7 +168,6 @@ class CourseDetail extends React.Component {
         <div className="bounds">
           <div className="grid-100"><span>
           {this.displayUpdateButton()}
-          <NavLink className="button" to='/' onClick={this.deleteCourse.bind(this)}>Delete Course</NavLink>
           </span>
           <NavLink className="button button-secondary" to='/'>Return to List</NavLink></div>
         </div>

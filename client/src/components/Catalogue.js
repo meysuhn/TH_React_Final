@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 class Catalogue extends React.Component {
   // Initialising state directly inside the class definition using a class property
   state = {
-      courses: null,
+      courses: '',
     };
 
   componentDidMount() {

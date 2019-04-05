@@ -129,7 +129,7 @@ handleSubmit(event) {
                     type="text"
                     className="input-title course--title--input"
                     placeholder="Course title..."
-                    value={this.state.course.title}
+                    value={this.state.course.title || ''}
                     onChange={this.titleChange}/>
                   </div>
                   <p>By {this.state.user.firstName} {this.state.user.lastName}</p>
@@ -141,7 +141,7 @@ handleSubmit(event) {
                     name="description"
                     className=""
                     placeholder="Course description..."
-                    value={this.state.course.description}
+                    value={this.state.course.description || ''}
                     onChange={this.descriptionChange}>
                     </textarea>
                   </div>
@@ -159,7 +159,7 @@ handleSubmit(event) {
                         type="text"
                         className="course--time--input"
                         placeholder="Hours"
-                        value={this.state.course.estimatedTime}
+                        value={this.state.course.estimatedTime || ''}
                         onChange={this.estimatedTimeChange}/>
                       </div>
                     </li>
@@ -171,7 +171,7 @@ handleSubmit(event) {
                         name="materialsNeeded"
                         className=""
                         placeholder="List materials..."
-                        value={this.state.course.materialsNeeded}
+                        value={this.state.course.materialsNeeded || ''}
                         onChange={this.materialsNeededChange}>
                         </textarea>
                       </div>
