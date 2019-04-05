@@ -8,9 +8,9 @@ import {
   Switch
 } from 'react-router-dom';
 
+
 // Components
 import Header from './components/Header';
-
 import Catalogue from './components/Catalogue';
 import CourseDetail from './components/Course-detail';
 import CreateCourse from './components/Create-course';
@@ -18,16 +18,7 @@ import SignIn from './components/Sign-in';
 import SignUp from './components/Sign-up';
 import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
-
-
-// const { history } = this.props;
-
-
-// Import Context provider
-// import { Provider } from './components/Context/auth.js';
 // if file was name 'index' you could leave off the final file name as Node will always default to look for an index.js if no file name provided.
-
-
 // import NotFound from './components/Not-found';
 // import Error from './components/Error';
 // import Forbidden from './components/Forbidden';
@@ -56,7 +47,8 @@ class App extends Component {
 
 
 
-  signIn = (userInput) => {
+  signIn = (userInput, props) => {
+    console.log(props)
     axios.get('http://localhost:5000/api/users', {
        auth: { // axios basic auth header
           username: userInput.email,
@@ -77,10 +69,11 @@ class App extends Component {
       user.email = response.data.emailAddress;
       user.password = response.config.auth.password;
       user.isloggedin = true;
-      user.daFuck = true;
+      user.helloChris = true;
       this.setState({user})
       this.setState({auth: response.config.auth})
-      // this.props.history.push('/'); // This doesn't work.
+      props.history.push('/'); // This doesn't work.
+
 
 
       })
@@ -108,36 +101,6 @@ class App extends Component {
     //   this.setState({auth: null})
     //   // Also need some sort of redirect on here
     // }
-
-
-
-// to quickly paste in
-  // Header
-    // <Header userData={this.state}/>
-
-  // Catalogue
-    // <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
-
-  // CreateCourse
-    // <Route exact path="/courses/create" component={CreateCourse} />
-    // <Route exact path="/courses/create" component={() => <CreateCourse signIn={this.state}/>}  />
-
-  // CourseDetail
-    // <Route exact path="/courses/:id" component={CourseDetail} />
-    // <Route exact path="/courses/:id" component={() => <CourseDetail stuff={this.state}/>}  />
-
-  // UpdateCourse
-    // <Route exact path="/courses/:id/update" component={UpdateCourse} />
-    // <Route exact path="/courses/:id/update" component={() => <UpdateCourse props={this.state}/>}  />
-
-  // Sign in
-    // <Route exact path="/signin" component={() => <SignIn  signIn={this.signIn}/>} />
-
-  // Sign out
-
-  // Sign up
-
-
 
 
 
@@ -171,7 +134,11 @@ class App extends Component {
             {/* <Route exact path="/courses/:id/update" component={() => <UpdateCourse signIn={this.state}/>} /> */}
             {/* Make signIn method available to SignIn component.*/}
 
-            <Route exact path="/signin" component={() => <SignIn  signIn={this.signIn}/>} />
+            <Route
+              exact path="/signin"
+              render={(props) => (<SignIn {...this.props} {...props} {...this.state} signIn={this.signIn}/>)}
+            />
+
             {/*<Route exact path="/signout" component={SignOut} />*/}
             <Route exact path="/signout" component={() => <SignOut signOut={this.signOut}/>} />
 

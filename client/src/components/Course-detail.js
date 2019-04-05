@@ -117,7 +117,7 @@ class CourseDetail extends React.Component {
 
 
   deleteCourse(event) {
-      console.log("hi");
+      console.log("Delete has fired");
 
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a DELETE request
@@ -125,7 +125,11 @@ class CourseDetail extends React.Component {
         method: 'delete',
         url: `http://localhost:5000/api/courses/${params.id}`,
       }).then( (response) => {
-        // handle success
+        // console.log("Course successfully deleted");
+        // this.props.history.push('/courses/')
+        this.setState({course:response.data})
+        console.log(this.state.course);
+        this.props.history.push('/courses/') // return the user to the courses catalogue page
       })
       .catch(function (error) {
         // handle error

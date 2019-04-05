@@ -45,7 +45,7 @@ class SignIn extends React.Component {
     event.preventDefault();
     let userInput = {"email": this.state.user.email, "password": this.state.user.password}
     console.log(userInput)
-    this.props.signIn(userInput)
+    this.props.signIn(userInput, this.props) // Pass props here so App.js has access to histroy object for push method.
 
 
     // Then user needs to be redirected to catalouge after sign in...where is that done?

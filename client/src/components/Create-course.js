@@ -78,8 +78,8 @@ handleSubmit(event) {
       user:this.state.user._id,
     },
     auth: {
-      username: this.props.signIn.auth.username,
-      password: this.props.signIn.auth.password
+      username: this.props.auth.username,
+      password: this.props.auth.password
     }
 
     // User creds not being passed in
@@ -93,10 +93,13 @@ handleSubmit(event) {
     // handle success
     this.setState({course:response.data})
     console.log(this.state.course);
+    this.props.history.push('/courses/') // return the user to the courses catalogue page
   })
-  .catch(function (error) {
+  .catch(function (error, response) {
     // handle error
     console.log(error);
+    console.log("ERROS!!!!")
+    console.log(response)
   })
   .then(function () {
     // always executed

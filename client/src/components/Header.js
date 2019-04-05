@@ -21,7 +21,10 @@ const Header = (props) => {
     </React.Fragment>
   } else {
     headerNav =
-    <NavLink className="signout" to="/signin">Sign In</NavLink>
+    <React.Fragment>
+      <NavLink className="signout" to="/signin">Sign In</NavLink>
+      <NavLink to='/signup' className="signout">Sign Up</NavLink>
+    </React.Fragment>
   }
   return (
     <React.Fragment>

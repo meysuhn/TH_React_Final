@@ -68,6 +68,7 @@ app.use((err, req, res, next) => { // 1st param is an error object.
   if (enableGlobalErrorLogging) {
     console.error('Express Global Error Handler Fired'); // C11 didn't have line below but is good.
     console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
+    console.log(err); // this hows the correct messages in the terminal.
   }
 
   res.status(err.status || 500).json({ // if err object has status propery then use that, if not then set 500.

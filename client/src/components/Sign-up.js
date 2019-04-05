@@ -89,6 +89,8 @@ class SignUp extends React.Component {
     .catch(function (error) {
       // handle error
       console.log(error);
+      console.log(error.status);
+      // if error
     })
     .then(function () {
       // always executed
@@ -161,7 +163,7 @@ class SignUp extends React.Component {
             </form>
           </div>
           <p>&nbsp;</p>
-          <p>Already have a user account? <a href="sign-in.html">Click here</a> to sign in!</p>
+          <p>Already have a user account? <NavLink to="/signin">Click here</NavLink> to sign in!</p>
         </div>
       </div>
     )
