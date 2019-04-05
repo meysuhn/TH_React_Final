@@ -54,9 +54,9 @@ class SignUp extends React.Component {
   // Define event handlers as a method on the class (using two different approaches)
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
-    console.log(this.props);
-    console.log("POST fired");
+    // console.log(this.state);
+    // console.log(this.props);
+    // console.log("POST fired");
 
 
 
@@ -72,19 +72,10 @@ class SignUp extends React.Component {
         password:this.state.user.passwordCheck,
       },
 
-      // User creds not being passed in
-      // I think it's the API that asigns the user to the new course...
-
-      // Are the data details overwriting state? NO. But then that state is only updated on a submit.
-      // You're forming that basis of a question here. Good.
-
 
     }).then( (response) => {
       // handle success
-      // this.setState({course:response.data})
-      console.log("Success");
-      // Push the user to the sign in page for them to sign in.
-      this.props.history.push('/signin');
+      this.props.history.push('/signin'); // Push the user to the sign in page for them to sign in.
     })
     .catch(function (error) {
       // handle error
@@ -97,7 +88,6 @@ class SignUp extends React.Component {
     });
 
   }
-
 
   render() {
     return (

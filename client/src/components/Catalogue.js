@@ -5,8 +5,6 @@ import Item from './Catalogue-item';
 import { NavLink } from 'react-router-dom';
 
 
-
-
 class Catalogue extends React.Component {
   // Initialising state directly inside the class definition using a class property
   state = {
@@ -30,15 +28,12 @@ class Catalogue extends React.Component {
 
   displayAllCourses(){
     if(this.state.courses) {
-          return this.state.courses.map( course => {
-            return (
-              <Item key={course._id} title={course.title} id={course._id}/>
-            )
-          }
-            )
-
+      return this.state.courses.map( course => {
+        return (
+          <Item key={course._id} title={course.title} id={course._id}/>
+        )
+      })
     } else {
-      // console.log("empty");
     }
   }
 

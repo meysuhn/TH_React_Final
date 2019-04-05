@@ -1,15 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-// import { Consumer } from './Context/auth.js'
 
-// <Consumer>
-//   {/* A render prop needs to be used inside of <Consumer> */}
-// </Consumer>
-
-// <NavLink to='/signout' className="signout">Sign Out</NavLink>
 
 const Header = (props) => {
-  console.log(props);
 
   let headerNav;
   if (props.userData.user.isloggedin !== false ) {

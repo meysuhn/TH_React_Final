@@ -18,6 +18,7 @@ import SignIn from './components/Sign-in';
 import SignUp from './components/Sign-up';
 import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
+// import PrivateRoute from './components/hoc/PrivateRoute';
 // if file was name 'index' you could leave off the final file name as Node will always default to look for an index.js if no file name provided.
 // import NotFound from './components/Not-found';
 // import Error from './components/Error';

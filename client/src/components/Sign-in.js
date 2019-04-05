@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 
-// This needs a POST route
 
 class SignIn extends React.Component {
 
@@ -12,8 +11,6 @@ class SignIn extends React.Component {
       password: ''
     },
   };
-
-
 
   emailChange = (event) => { // when there's a change pass in the event object
       const value = event.target.value;
@@ -39,16 +36,13 @@ class SignIn extends React.Component {
 
 
   handleSubmit = event => {
-
-    console.log(this.state)
-    console.log(this.props)
+    // console.log(this.state)
+    // console.log(this.props)
     event.preventDefault();
     let userInput = {"email": this.state.user.email, "password": this.state.user.password}
-    console.log(userInput)
+    // console.log(userInput)
     this.props.signIn(userInput, this.props) // Pass props here so App.js has access to histroy object for push method.
 
-
-    // Then user needs to be redirected to catalouge after sign in...where is that done?
   };
 
   render() {

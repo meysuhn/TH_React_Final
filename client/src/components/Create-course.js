@@ -61,9 +61,9 @@ handleCancel = event => {
 // Define event handlers as a method on the class (using two different approaches)
 handleSubmit(event) {
   event.preventDefault();
-  console.log(this.state);
-  console.log(this.props);
-  console.log("POST fired");
+  // console.log(this.state);
+  // console.log(this.props);
+  // console.log("POST fired");
 
 
   // Send a POST request
@@ -82,17 +82,11 @@ handleSubmit(event) {
       password: this.props.auth.password
     }
 
-    // User creds not being passed in
-    // I think it's the API that asigns the user to the new course...
-
-    // Are the data details overwriting state? NO. But then that state is only updated on a submit.
-    // You're forming that basis of a question here. Good.
-
 
   }).then( (response) => {
     // handle success
     this.setState({course:response.data})
-    console.log(this.state.course);
+    // console.log(this.state.course);
     this.props.history.push('/courses/') // return the user to the courses catalogue page
   })
   .catch(function (error, response) {

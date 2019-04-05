@@ -4,9 +4,6 @@ import ReactMarkdown from "react-markdown"
 import { NavLink } from 'react-router-dom';
 
 
-
-
-
 class CourseDetail extends React.Component {
 
   state = {
@@ -57,7 +54,6 @@ class CourseDetail extends React.Component {
               </div>
             )
     } else {
-      // console.log("empty");
     }
   }
 
@@ -70,7 +66,6 @@ class CourseDetail extends React.Component {
               </div>
             )
     } else {
-      // console.log("empty");
     }
   }
 
@@ -117,18 +112,14 @@ class CourseDetail extends React.Component {
 
 
   deleteCourse(event) {
-      console.log("Delete has fired");
-
+      // console.log("Delete has fired");
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a DELETE request
       axios({
         method: 'delete',
         url: `http://localhost:5000/api/courses/${params.id}`,
       }).then( (response) => {
-        // console.log("Course successfully deleted");
-        // this.props.history.push('/courses/')
         this.setState({course:response.data})
-        console.log(this.state.course);
         this.props.history.push('/courses/') // return the user to the courses catalogue page
       })
       .catch(function (error) {
@@ -147,9 +138,9 @@ class CourseDetail extends React.Component {
     let userProp = this.props.user;
     if(userProp.isloggedin === true) {
       if(userProp.id === courseId) {
-        console.log(userProp.id);
-        console.log(courseId);
-        console.log("OK");
+        // console.log(userProp.id);
+        // console.log(courseId);
+        // console.log("OK");
           return (
             <React.Fragment>
               <NavLink className="button" to='/' onClick={this.deleteCourse.bind(this)}>Delete Course</NavLink>

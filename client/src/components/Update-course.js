@@ -27,14 +27,14 @@ class UpdateCourse extends React.Component {
 
     componentDidMount() {
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
-      console.log(this)
+      // console.log(this)
       axios.get(`http://localhost:5000/api/courses/${params.id}`)
 
         .then( (response) => {
           // handle success
           this.setState({course:response.data})
           this.setState({user:response.data.user})
-          console.log(this.state.course);
+          // console.log(this.state.course);
         })
         .catch(function (error) {
           // handle error
@@ -79,26 +79,9 @@ class UpdateCourse extends React.Component {
     // Define event handlers as a method on the class (using two different approaches)
     handleSubmit(event) {
       event.preventDefault();
-      console.log(this.state);
-      console.log(this.props);
-      console.log("PUT fired");
-
-
-
-      // axios({
-      //   method: 'post',
-      //   url: 'http://localhost:5000/api/courses/',
-      //   data: { // You need to pass in the user too.
-      //     title:this.state.course.title,
-      //     description:this.state.course.description,
-      //     materialsNeeded:this.state.course.materialsNeeded,
-      //     estimatedTime:this.state.course.estimatedTime,
-      //     user:this.state.user._id,
-      //   },
-      //   auth: {
-      //     username: this.props.signIn.auth.username,
-      //     password: this.props.signIn.auth.password
-      //   }
+      // console.log(this.state);
+      // console.log(this.props);
+      // console.log("PUT fired");
 
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a POST request
@@ -116,14 +99,9 @@ class UpdateCourse extends React.Component {
           username: this.props.auth.username,
           password: this.props.auth.password
         }
-        // auth: { // axios basic auth header
-        //     username: userInput.email,
-        //     password: userInput.password
-        // }
       }).then( (response) => {
         // handle success
         this.setState({course:response.data})
-        console.log(this.state.course);
         this.props.history.push('/courses/') // return the user to the courses catalogue page
       })
       .catch(function (error) {
@@ -139,11 +117,9 @@ class UpdateCourse extends React.Component {
     handleCancel = event => {
       event.preventDefault();
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
-
-          const { history } = this.props;
-          // const { course } = this.state;
-          history.push(`/courses/${params.id}`)
-        }
+      const { history } = this.props;
+      history.push(`/courses/${params.id}`)
+    }
 
   render() {
     return (
