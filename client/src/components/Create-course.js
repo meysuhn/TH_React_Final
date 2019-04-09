@@ -83,20 +83,23 @@ handleSubmit(event) {
     }
 
 
-  }).then( (response) => {
+  }).then( (err, response) => {
     // handle success
     this.setState({course:response.data})
+    console.log("Wtf?!")
+    console.log(response);
+    console.log(err);
     // console.log(this.state.course);
     this.props.history.push('/courses/') // return the user to the courses catalogue page
   })
-  .catch(function (error, response) {
+  .catch(function (err) {
     // handle error
-    console.log(error);
-    console.log("ERROS!!!!")
-    console.log(response)
+    console.log(err);
+    console.log("ERROS!!!!");
   })
-  .then(function () {
-    // always executed
+  .then(function (err) {
+    console.log("This, really?!")
+    console.log(err);
   });
 
 }
@@ -107,15 +110,19 @@ handleSubmit(event) {
       <div className="bounds course--detail">
           <h1>Create Course</h1>
           <div>
-            <div>
-              <h2 className="validation--errors--label">Validation errors</h2>
-              <div className="validation-errors">
-                <ul>
-                  <li>Please provide a value for "Title"</li>
-                  <li>Please provide a value for "Description"</li>
-                </ul>
+
+              {/*
+              <div>
+                <h2 className="validation--errors--label">Validation errors</h2>
+                <div className="validation-errors">
+                  <ul>
+                    <li>Please provide a value for "Title"</li>
+                    <li>Please provide a value for "Description"</li>
+                  </ul>
+                </div>
               </div>
-            </div>
+                */}
+
             <form>
               <div className="grid-66">
                 <div className="course--header">

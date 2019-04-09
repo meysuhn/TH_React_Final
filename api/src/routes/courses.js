@@ -47,11 +47,19 @@ router.get('/:courseId', (req, res, next) => {
 // POST /api/courses 201
   // Creates a course, sets the Location header, and returns no content
 router.post('/', mid.requiresLogin, (req, res, next) => {
+  console.log("aqui está bien")
   req.body.user = res.locals.user._id; // add authorised user id to new course body
   Course.create(req.body, (err) => {
     if (err) {
       err.status = 400; // will fire if Mongoose validation fails, passing to Express Global Error Handler
-      return next(err);
+      console.log(err)
+      console.log("OK, so you get this far...ahora que?")
+      console.log("Could it be that I don't have a response option other than to Global?")
+
+      // It's getting stuck here for some reason!
+      return res.err;
+      // return (err); // 'next' is sending to global I think? Is 'next' the problem?
+      // I need to return an error response to the API here, not via Global Handler
     }
   return res.status(201).location('/').json(); // Returns no content
   });

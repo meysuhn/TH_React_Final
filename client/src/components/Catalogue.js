@@ -12,9 +12,11 @@ class Catalogue extends React.Component {
     };
 
   componentDidMount() {
+    console.log("componentDidMount FIRED")
     axios.get('http://localhost:5000/api/courses')
       .then( (response) => {
         // handle success
+        console.log("componentDidMount Success")
         this.setState({courses:response.data})
       })
       .catch(function (error) {
@@ -25,6 +27,42 @@ class Catalogue extends React.Component {
         // always executed
       });
   }
+
+  componentWillUnmount() {
+      this.isCancelled = true;
+  }
+
+  // the problem only happens on the first delete? but not subsequent.
+  // significa que tiene que ver solo con componentDidMount?
+
+  componentDidUpdate(prevProps) {
+    console.log("UPDATE fired")
+    if (this.props !== prevProps) {
+      console.log("If on Update fired")
+      axios.get('http://localhost:5000/api/courses')
+        .then( (response) => {
+          // handle success
+          this.setState({courses:response.data})
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    } else {
+
+    }
+
+  }
+
+//   componentDidUpdate(prevProps) {
+//   // Typical usage (don't forget to compare props):
+//   if (this.props.userID !== prevProps.userID) {
+//     this.fetchData(this.props.userID);
+//   }
+// }
 
   displayAllCourses(){
     if(this.state.courses) {

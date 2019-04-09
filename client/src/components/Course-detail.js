@@ -3,6 +3,9 @@ import axios from 'axios';
 import ReactMarkdown from "react-markdown"
 import { NavLink } from 'react-router-dom';
 
+// Experiment for DELETE process
+import Catalogue from './Catalogue';
+
 
 class CourseDetail extends React.Component {
 
@@ -120,7 +123,11 @@ class CourseDetail extends React.Component {
         url: `http://localhost:5000/api/courses/${params.id}`,
       }).then( (response) => {
         this.setState({course:response.data})
+
+        
         this.props.history.push('/courses/') // return the user to the courses catalogue page
+        // This is calling the componentDidMount method, but getting this error:
+        // "index.js:1446 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
       })
       .catch(function (error) {
         // handle error
