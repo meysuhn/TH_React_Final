@@ -12,6 +12,7 @@ class SignUp extends React.Component {
       password: '',
       passwordCheck: ''
     },
+    errors: [],
   };
 
 
@@ -77,11 +78,15 @@ class SignUp extends React.Component {
       // handle success
       this.props.history.push('/signin'); // Push the user to the sign in page for them to sign in.
     })
-    .catch(function (error) {
+    .catch( (error) => {
       // handle error
-      console.log(error);
-      console.log(error.status);
-      // if error
+      console.log(error.response.data.errors);
+      // Rebuild API side so pattern is consistent on client side.
+
+
+      this.setState({
+        errors: error.response.data.errors
+      });
     })
     .then(function () {
       // always executed
@@ -90,11 +95,37 @@ class SignUp extends React.Component {
   }
 
   render() {
+    let validationHTML;
+
+    if (this.state.errors) {
+      // This error code only works for 400 errors. If user not signed in (401) then my api routes it differently
+      // Due to '<ProtectedRoute> feature however users not signed in wouldn't have access to Create-course page anyway
+      // But this is why you've to check for this.state.errors first, as when practising with ProtectedRoutes turned off the 401's caused below to bug out
+      if (this.state.errors.length > 0) {
+        const errors = this.state.errors;
+
+        let mappedErrors = errors.map(error => (
+          <li key={error.toString()}>{error}</li>
+        ));
+
+        validationHTML =
+        <div>
+          <h2 className="validation--errors--label">Validation errors</h2>
+          <div className="validation-errors">
+            <ul>
+              {mappedErrors}
+            </ul>
+          </div>
+        </div>
+      }
+    }
+
     return (
       <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign Up</h1>
           <div>
+          {validationHTML}
             <form>
               <div>
                 <input

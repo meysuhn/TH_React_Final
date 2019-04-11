@@ -16,6 +16,7 @@ class CreateCourse extends React.Component {
       firstName: '',
       lastName: ''
     },
+    errors: [],
   };
 
 // This isn't a componentDidMount scenario. You only want to fire the POST request once user hits submit.
@@ -63,7 +64,7 @@ handleSubmit(event) {
   event.preventDefault();
   // console.log(this.state);
   // console.log(this.props);
-  // console.log("POST fired");
+  console.log("POST fired");
 
 
   // Send a POST request
@@ -83,46 +84,66 @@ handleSubmit(event) {
     }
 
 
-  }).then( (err, response) => {
+  }).then( (response) => {
     // handle success
     this.setState({course:response.data})
-    console.log("Wtf?!")
+    console.log("POST Success")
     console.log(response);
-    console.log(err);
     // console.log(this.state.course);
     this.props.history.push('/courses/') // return the user to the courses catalogue page
   })
-  .catch(function (err) {
+  .catch( (error) => {
     // handle error
-    console.log(err);
-    console.log("ERROS!!!!");
+    console.log("POST Error")
+    console.log(error.response);
+    console.log(error.response.data);
+
+    this.setState({ // add error messages to state so they're available to render method below.
+      errors: error.response.data.errors
+    });
+
+
   })
   .then(function (err) {
-    console.log("This, really?!")
-    console.log(err);
+    console.log("This always fires, apparently")
   });
 
 }
 
 
   render() {
+    let validationHTML;
+
+    if (this.state.errors) {
+      // This error code only works for 400 errors. If user not signed in (401) then my api routes it differently
+      // Due to '<ProtectedRoute> feature however users not signed in wouldn't have access to Create-course page anyway
+      // But this is why you've to check for this.state.errors first, as when practising with ProtectedRoutes turned off the 401's caused below to bug out
+      if (this.state.errors.length > 0) {
+        const errors = this.state.errors;
+
+        let mappedErrors = errors.map(error => (
+          <li key={error.toString()}>{error}</li>
+        ));
+
+        validationHTML =
+        <div>
+          <h2 className="validation--errors--label">Validation errors</h2>
+          <div className="validation-errors">
+            <ul>
+              {mappedErrors}
+            </ul>
+          </div>
+        </div>
+      }
+    }
+
+
+
     return (
       <div className="bounds course--detail">
           <h1>Create Course</h1>
           <div>
-
-              {/*
-              <div>
-                <h2 className="validation--errors--label">Validation errors</h2>
-                <div className="validation-errors">
-                  <ul>
-                    <li>Please provide a value for "Title"</li>
-                    <li>Please provide a value for "Description"</li>
-                  </ul>
-                </div>
-              </div>
-                */}
-
+          {validationHTML}
             <form>
               <div className="grid-66">
                 <div className="course--header">

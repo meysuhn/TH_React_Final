@@ -43,6 +43,7 @@ class App extends Component {
         username: '',
         password: ''
       },
+      errors: [],
     };
   }
 
@@ -78,10 +79,14 @@ class App extends Component {
 
 
       })
-      .catch(function (error) {
+      .catch((error) => { // Need arrow function here. 'function' won't work.
         // handle error
-        console.log(error);
-        console.log("fired");
+        console.log(error.response.data.message);
+        console.log("ficccred");
+        // Add API's error message to client state to make available to render() below
+        this.setState({
+          errors: error.response.data.message
+        });
         // setState to
       })
       .then(function () {

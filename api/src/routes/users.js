@@ -18,19 +18,35 @@ router.get('/', mid.requiresLogin, (req, res) => { // Passes request to middlewa
 router.post('/', (req, res, next) => {
   User.findOne({ emailAddress: req.body.emailAddress }).exec((err, user) => {
     if (user) { // if there's an email match then error. No duplicates allowed.
+    let myErrors = [];
+    // Build new error object
       err = new Error();
       err.message = 'Email already exists in database';
+      // if you're adding the message here then what's the point of having it in the schema too?
       err.status = 400; // this status gets through.
-      next(err);
+      myErrors.push(err.message); // DOES THIS ACTUALY DO ANYTHING?
+      // pass contructed error object off.
+      return res.status(400).json({ errors: myErrors });
+      // next(err);
+
+      // You've got to pass it off here
+      // Here it will only be about the email field
+
     } else {
     User.create(req.body, (err, user) => {
       console.log("hi"); //this part is OK.
       if (user) {// If a user has been created
+        console.log("guten tag")
         if (!user.emailAddress || !user.firstName || !user.lastName || !user.password) {
-          // if any fields missing then reject.
-          err = new Error();
-          err.status = 400; // this error status does not get added.
-          return next(err);
+
+          // if any fields missing then reject...
+          // ...this code block isn't working properly...it never activates.
+          // Is it because Mongoose is automatically rejecting and thus sending to Else clause alpha below?
+          // In which case this is entirely redundant?
+          // Build out the error validation further below and fix this bit up later.
+          console.log('this doesnt work');
+          // return next(err);
+
         }
         if (err) { // Any others errors pathway
           console.log("fired");
@@ -38,8 +54,54 @@ router.post('/', (req, res, next) => {
         }
         return res.status(201).location('/').json();
     } else {
-      console.log("whatev");
-      return next(err);
+      // Else clause alpha
+      // console.log("whatev");
+
+      let myErrors = [];
+      // console.log(err); // The info you need is on the err object...
+      // ...thus you don't need to create a new error object.
+      // error = new Error();
+      // error.status = 400;
+      // console.log(error);
+
+      // This is dreadful code. It's not DRY nor agile.
+        // It's working at least but you need to refine later.
+
+      if (err.errors.firstName) {
+        let errorObject = err.errors.firstName;
+        // console.log(Object.values(errorObject));
+        let titleArray = Object.values(errorObject); // convert object values to an array
+        // console.log(titleArray[0]);
+        myErrors.push(titleArray[0]);
+
+      }
+      if (err.errors.lastName) {
+        let errorObject2 = err.errors.lastName;
+        // console.log(Object.values(errorObject2));
+        let descArray = Object.values(errorObject2);
+        // console.log(descArray[0]);
+        myErrors.push(descArray[0]);
+      }
+      if (err.errors.emailAddress) {
+        let errorObject = err.errors.emailAddress;
+        // console.log(Object.values(errorObject));
+        let titleArray = Object.values(errorObject); // convert object values to an array
+        // console.log(titleArray[0]);
+        myErrors.push(titleArray[0]);
+
+      }
+      if (err.errors.password) {
+        let errorObject2 = err.errors.password;
+        // console.log(Object.values(errorObject2));
+        let descArray = Object.values(errorObject2);
+        // console.log(descArray[0]);
+        myErrors.push(descArray[0]);
+      }
+
+      // console.log(myErrors);
+      return res.status(400).json({ errors: myErrors }); // this way skips the global error handler so 'next' not required
+
+      // return next(err);
     };
     });
   }

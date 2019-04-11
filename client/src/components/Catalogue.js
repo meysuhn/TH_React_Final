@@ -8,51 +8,60 @@ import { NavLink } from 'react-router-dom';
 class Catalogue extends React.Component {
   // Initialising state directly inside the class definition using a class property
   state = {
-      courses: '',
+      courses: [],
     };
 
-  componentDidMount() {
-    console.log("componentDidMount FIRED")
+  componentDidMount(prevProps, prevState) {
+    // console.log("1a: componentDidMount FIRED")
+    // console.log(prevProps);
+    // console.log(prevState);
+    // console.log(this.props);
+    // console.log(this.state);
     axios.get('http://localhost:5000/api/courses')
       .then( (response) => {
         // handle success
-        console.log("componentDidMount Success")
+        // console.log("1b: componentDidMount Success .then fired")
         this.setState({courses:response.data})
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // console.log(error);
+        // console.log("1c: componentDidMount FIRED")
       })
       .then(function () {
         // always executed
       });
   }
 
-  componentWillUnmount() {
-      this.isCancelled = true;
-  }
 
   // the problem only happens on the first delete? but not subsequent.
   // significa que tiene que ver solo con componentDidMount?
 
-  componentDidUpdate(prevProps) {
-    console.log("UPDATE fired")
-    if (this.props !== prevProps) {
-      console.log("If on Update fired")
-      axios.get('http://localhost:5000/api/courses')
-        .then( (response) => {
-          // handle success
-          this.setState({courses:response.data})
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .then(function () {
-          // always executed
-        });
-    } else {
-
+  componentDidUpdate(prevProps, prevState) {
+    // console.log("2a: componentDidUpdate fired")
+    // console.log(prevProps);
+    // console.log(this.props);
+    // console.log(this.props);
+    // console.log(this.state);
+    // console.log(prevState.courses);
+    let check = prevState.courses;
+    if (check.length > 0) {
+      if ((prevProps.data !== this.props.data)) {
+        // console.log("2b: componentDidUpdate IF fired")
+        axios.get('http://localhost:5000/api/courses')
+          .then( (response) => {
+            // handle success
+            // console.log("2c: componentDidUpdate Success .then fired")
+            this.setState({courses:response.data})
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .then(function () {
+            // always executed
+          });
+      }
     }
 
   }

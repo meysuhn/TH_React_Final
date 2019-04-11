@@ -30,5 +30,15 @@ const CourseSchema = new mongoose.Schema({
   },
 });
 
+// Validations on PUT methods don't work automatically. You've to add a flag or a pre hook as you've done below
+// otherwise users can PUT courses with blank titles and descriptions
+// https://stackoverflow.com/questions/15627967/why-mongoose-doesnt-validate-on-update
+CourseSchema.pre('findOneAndUpdate', function (next) {
+  this.options.runValidators = true // turn validations on for PUT method
+  next();
+
+
+});
+
 const Course = mongoose.model('Course', CourseSchema);
 module.exports = Course;
