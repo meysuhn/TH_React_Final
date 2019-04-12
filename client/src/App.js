@@ -95,18 +95,34 @@ class App extends Component {
       });
     }
 
-    // signOut = () => {
-    //   let user = {...this.state.user}
-    //   user.id = '';
-    //   user.firstName = '';
-    //   user.lastName = '';
-    //   user.email = '';
-    //   user.password = '';
-    //   user.isloggedin = false;
-    //   this.setState({user})
-    //   this.setState({auth: null})
-    //   // Also need some sort of redirect on here
-    // }
+
+
+    signOut = (props) => {
+      // This is actually pretty good.
+      // Sign-Out component doesn't redner anything
+        // It calls the signOut method here in App.js
+        // Auth and User global state are reset below and passed in to setState
+        // User is redirected to /Courses
+        // Caution: If you remove 'props.history.push('/courses/')' it will bug out as Sign-out would be stuck on infinite loop
+
+      let emptyAuth = {
+        username: '',
+        password: ''
+      };
+      let emptyUser = {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        isloggedin: false
+      }
+      this.setState({auth: emptyAuth})
+      this.setState({user: emptyUser})
+
+      props.history.push('/courses/') // after sign out push to home page.
+      }
+
+
 
 
 
@@ -146,7 +162,13 @@ class App extends Component {
             />
 
             {/*<Route exact path="/signout" component={SignOut} />*/}
-            <Route exact path="/signout" component={() => <SignOut signOut={this.signOut}/>} />
+
+{/*<Route exact path="/signout" component={() => <SignOut signOut={this.signOut}/>} />*/}
+            <Route
+              exact path="/signout"
+              render={(props) => (<SignOut {...this.props} {...props} {...this.state} signOut={this.signOut}/>)}
+            />
+
 
             <Route exact path="/signup" component={SignUp} />
           </Switch>

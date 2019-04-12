@@ -8,20 +8,25 @@ import { NavLink } from 'react-router-dom';
 class Catalogue extends React.Component {
   // Initialising state directly inside the class definition using a class property
   state = {
-      courses: [],
+      courses: '',
     };
 
   componentDidMount(prevProps, prevState) {
     // console.log("1a: componentDidMount FIRED")
-    // console.log(prevProps);
-    // console.log(prevState);
-    // console.log(this.props);
-    // console.log(this.state);
+    // This will be undefined
+    console.log(prevProps);
+    // This will be undefined
+    console.log(prevState);
+    console.log(this.props);
+    console.log(this.state);
+    // So when the component re-mounts state has been cleared.
+
     axios.get('http://localhost:5000/api/courses')
       .then( (response) => {
         // handle success
         // console.log("1b: componentDidMount Success .then fired")
-        this.setState({courses:response.data})
+        this.setState({courses:response.data}) // but what state is it actually setting? It's blank.
+        console.log(this.state);
       })
       .catch(function (error) {
         // handle error
@@ -33,38 +38,52 @@ class Catalogue extends React.Component {
       });
   }
 
+  // // Invoked just before a component instance is unmounted and destroyed
+  // // you use it to clear anything that needs to be cleared when a component is removed from the dom
+  // componentWillUnmount() {
+  //   source.cancel("Component Is Unmounting");
+  // }
+
 
   // the problem only happens on the first delete? but not subsequent.
   // significa que tiene que ver solo con componentDidMount?
 
-  componentDidUpdate(prevProps, prevState) {
-    // console.log("2a: componentDidUpdate fired")
-    // console.log(prevProps);
-    // console.log(this.props);
-    // console.log(this.props);
-    // console.log(this.state);
-    // console.log(prevState.courses);
-    let check = prevState.courses;
-    if (check.length > 0) {
-      if ((prevProps.data !== this.props.data)) {
-        // console.log("2b: componentDidUpdate IF fired")
-        axios.get('http://localhost:5000/api/courses')
-          .then( (response) => {
-            // handle success
-            // console.log("2c: componentDidUpdate Success .then fired")
-            this.setState({courses:response.data})
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
-          .then(function () {
-            // always executed
-          });
-      }
-    }
-
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   // console.log("2a: componentDidUpdate fired")
+  //   console.log("prevState.courses");
+  //   console.log(prevState.courses);
+  //   console.log("this.state.courses");
+  //   console.log(this.state.courses);
+  //   // The first time around there's nothing in this.state.courses
+  //
+  //   // console.log(this.props);
+  //   // console.log(this.props);
+  //   // console.log(this.state);
+  //   // console.log(prevState.courses);
+  //   // let check = prevState.courses;
+  //   // if (check.length > 0) {
+  //   if (prevState.courses.length !== 0) {
+  //     console.log("!==0");
+  //
+  //     if ((this.state.courses !== prevState.courses)) {
+  //       console.log("2b: componentDidUpdate IF fired")
+  //       axios.get('http://localhost:5000/api/courses')
+  //         .then( (response) => {
+  //           // handle success
+  //           // console.log("2c: componentDidUpdate Success .then fired")
+  //           this.setState({courses:response.data})
+  //         })
+  //         .catch(function (error) {
+  //           // handle error
+  //           console.log(error);
+  //         })
+  //         .then(function () {
+  //           // always executed
+  //         });
+  //     // }
+  //   }
+  // }
+  // }
 
 //   componentDidUpdate(prevProps) {
 //   // Typical usage (don't forget to compare props):

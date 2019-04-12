@@ -119,9 +119,14 @@ class CourseDetail extends React.Component {
         method: 'delete',
         url: `http://localhost:5000/api/courses/${params.id}`,
       }).then( (response) => {
-        this.setState({course:response.data})
 
 
+
+        // This is what Lee suggested I comment out
+        // OK, so I remove this below line but then I still get the problem of state not updating
+        // this.setState({course:response.data})
+
+        console.log(response)
         this.props.history.push('/courses/') // return the user to the courses catalogue page
         // This is calling the componentDidMount method, but getting this error:
         // "index.js:1446 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
