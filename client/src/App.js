@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Global.css'; // Original create-react-app
+import './Global.css';
 import axios from 'axios';
 
 import {
@@ -18,7 +18,7 @@ import SignIn from './components/Sign-in';
 import SignUp from './components/Sign-up';
 import SignOut from './components/Sign-out'; // to be built
 import UpdateCourse from './components/Update-course';
-// import PrivateRoute from './components/hoc/PrivateRoute';
+import PrivateRoute from './components/hoc/PrivateRoute';
 // if file was name 'index' you could leave off the final file name as Node will always default to look for an index.js if no file name provided.
 // import NotFound from './components/Not-found';
 // import Error from './components/Error';
@@ -50,7 +50,7 @@ class App extends Component {
 
 
   signIn = (userInput, props) => {
-    console.log(props)
+    // console.log(props)
     axios.get('http://localhost:5000/api/users', {
        auth: { // axios basic auth header
           username: userInput.email,
@@ -134,9 +134,9 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
 
-            <Route
+            <PrivateRoute
               exact path="/courses/create"
-              render={(props) => (<CreateCourse {...this.props} {...props} {...this.state}/>)}
+              render={(props) => (<CreateCourse {...this.props} {...props} {...this.state} signIn={this.signIn}/>)}
             />
 
             <Route
@@ -145,7 +145,7 @@ class App extends Component {
             />
 
             {/* <Route exact path="/courses/:id/update" component={UpdateCourse} /> */}
-            <Route
+            <PrivateRoute
               exact path="/courses/:id/update"
               render={(props) => (<UpdateCourse {...this.props} {...props} {...this.state}/>)}
             />

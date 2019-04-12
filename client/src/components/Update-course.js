@@ -102,8 +102,15 @@ class UpdateCourse extends React.Component {
         }
       }).then( (response) => {
         // handle success
-        this.setState({course:response.data})
+        console.log(response);
+        // The below does nothing. So how is Catalogue rendering with a fresh state?
+        // this.setState({course:response.data})
+
+        // Is Catalogue making an axios call?
+
         console.log("PUT Success")
+        console.log("Does the below actually return anything?!")
+        // No, it's doesn't so how is state getting updated?
         console.log(response);
         this.props.history.push('/courses/') // return the user to the courses catalogue page
 

@@ -14,17 +14,17 @@ class Catalogue extends React.Component {
   componentDidMount(prevProps, prevState) {
     // console.log("1a: componentDidMount FIRED")
     // This will be undefined
-    console.log(prevProps);
-    // This will be undefined
-    console.log(prevState);
-    console.log(this.props);
-    console.log(this.state);
+    // console.log(prevProps);
+    // // This will be undefined
+    // console.log(prevState);
+    // console.log(this.props);
+    // console.log(this.state);
     // So when the component re-mounts state has been cleared.
 
     axios.get('http://localhost:5000/api/courses')
       .then( (response) => {
         // handle success
-        // console.log("1b: componentDidMount Success .then fired")
+        console.log("1b: componentDidMount Success .then fired")
         this.setState({courses:response.data}) // but what state is it actually setting? It's blank.
         console.log(this.state);
       })

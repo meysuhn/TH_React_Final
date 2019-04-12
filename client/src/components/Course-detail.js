@@ -112,24 +112,30 @@ class CourseDetail extends React.Component {
 
 
   deleteCourse(event) {
+    event.preventDefault();
       // console.log("Delete has fired");
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a DELETE request
       axios({
         method: 'delete',
-        url: `http://localhost:5000/api/courses/${params.id}`,
+        url: `http://localhost:5000/api/courses/${params.id}`
       }).then( (response) => {
-
-
+        this.props.history.push('/courses/')
+        // This promise isn't working properly here. Why not? Ask this better question in forum.
 
         // This is what Lee suggested I comment out
         // OK, so I remove this below line but then I still get the problem of state not updating
         // this.setState({course:response.data})
 
-        console.log(response)
-        this.props.history.push('/courses/') // return the user to the courses catalogue page
-        // This is calling the componentDidMount method, but getting this error:
-        // "index.js:1446 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
+        // console.log(response.status)
+        // if (response.status === 202) {
+        //   console.log("sup")
+        //   // this.props.history.push('/courses/') // return the user to the courses catalogue page
+        //   // This isn't needed. Without it the user still gets sent to the catalogue page!!
+        //   // Why? How is that happening? Some auto feature of react?
+        //
+        // }
+
       })
       .catch(function (error) {
         // handle error
