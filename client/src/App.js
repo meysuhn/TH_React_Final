@@ -8,10 +8,6 @@ import {
   Switch
 } from 'react-router-dom';
 
-// I was using
-// import { BrowserRouter as Router, Route } from 'react-router'
-// instead of:
-// import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 
 // Components
@@ -55,7 +51,7 @@ class App extends Component {
 
 
   signIn = (userInput, props) => {
-    // console.log(props)
+
     axios.get('http://localhost:5000/api/users', {
        auth: { // axios basic auth header
           username: userInput.email,
@@ -82,21 +78,16 @@ class App extends Component {
       props.history.push('/'); // This doesn't work.
 
 
-
       })
       .catch((error) => { // Need arrow function here. 'function' won't work.
         // handle error
-        console.log(error.response.data.message);
-        console.log("ficccred");
         // Add API's error message to client state to make available to render() below
         this.setState({
           errors: error.response.data.message
         });
-        // setState to
       })
       .then(function () {
         // always executed
-        // this.props.history.push('/');
       });
     }
 
@@ -143,59 +134,12 @@ class App extends Component {
           <Header userData={this.state}/>
           <Switch>
             <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
-
-            {/* Old style */}
-            {/*
-              <Route
-                exact path="/courses/create"
-                render={(props1) => (<CreateCourse {...props1} {...this.state}/>)}
-              />
-              */}
-
-
-            {/* New style
-              <Route exact path="/courses/create" component = {CreateCourse} />
-              */}
-
-              {/* I've no idea if the line below is an anti-pattern or whatever, but at least everything is getting through.
-                */}
+            {/* I've no idea if the line below is an anti-pattern, but at least everything is getting through.*/}
             <PrivateRoute props={this.state} exact path="/courses/create" component={(props) => <CreateCourse props={[this.state, props]}/>} />
-
-            <Route
-              exact path="/courses/:id"
-              render={(props) => (<CourseDetail {...this.props} {...props} {...this.state}/>)}
-            />
-
-            {/* <Route exact path="/courses/:id/update" component={UpdateCourse} /> */}
-
-            {/*
-              <PrivateRoute
-                exact path="/courses/:id/update"
-                render={(props) => (<UpdateCourse {...this.props} {...props} {...this.state}/>)}
-              />
-              */}
+            <Route exact path="/courses/:id" render={(props) => (<CourseDetail {...this.props} {...props} {...this.state}/>)}/>
             <PrivateRoute props={this.state} exact path="/courses/:id/update" component={(props) => <UpdateCourse props={[this.state, props]}/>} />
-
-
-
-            {/* If I use the pattern below I lose the match object. Without it tho I can't access auth data. */}
-            {/* <Route exact path="/courses/:id/update" component={() => <UpdateCourse signIn={this.state}/>} /> */}
-            {/* Make signIn method available to SignIn component.*/}
-
-            <Route
-              exact path="/signin"
-              render={(props) => (<SignIn {...this.props} {...props} {...this.state} signIn={this.signIn}/>)}
-            />
-
-            {/*<Route exact path="/signout" component={SignOut} />*/}
-
-{/*<Route exact path="/signout" component={() => <SignOut signOut={this.signOut}/>} />*/}
-            <Route
-              exact path="/signout"
-              render={(props) => (<SignOut {...this.props} {...props} {...this.state} signOut={this.signOut}/>)}
-            />
-
-
+            <Route exact path="/signin" render={(props) => (<SignIn {...this.props} {...props} {...this.state} signIn={this.signIn}/>)}/>
+            <Route exact path="/signout" render={(props) => (<SignOut {...this.props} {...props} {...this.state} signOut={this.signOut}/>)}/>
             <Route exact path="/signup" component={SignUp} />
           </Switch>
         </div>
@@ -204,20 +148,4 @@ class App extends Component {
   }
 }
 
-
-// New style for HoC
-// <PrivateRoute  component= {CreateCourse}
-//               exact path="/courses/create"
-//             />
-
-
-
-
-// <Route
-//   path={`${this.props.match.url}view/:postId`}
-//   render={(props) => (
-// <Single {...this.props} {...props} />
-// )} />
-
-// <Route exact path="/signin" component={SignIn} />
 export default App;
