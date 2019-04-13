@@ -14,9 +14,7 @@ class CourseDetail extends React.Component {
       // isLoggedIn: false
     };
 
-    // state.isLoggedIn will work
-    // state.user.isLoggedIn does not work. React will only go one deep.
-    // Might you need to play with your state structure?
+
 
   componentDidMount() {
     const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
@@ -28,7 +26,7 @@ class CourseDetail extends React.Component {
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // console.log(error);
       })
       .then(function () {
         // always executed
@@ -113,7 +111,6 @@ class CourseDetail extends React.Component {
 
   deleteCourse(event) {
     event.preventDefault();
-      // console.log("Delete has fired");
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
       // Send a DELETE request
       axios({
@@ -121,25 +118,10 @@ class CourseDetail extends React.Component {
         url: `http://localhost:5000/api/courses/${params.id}`
       }).then( (response) => {
         this.props.history.push('/courses/')
-        // This promise isn't working properly here. Why not? Ask this better question in forum.
-
-        // This is what Lee suggested I comment out
-        // OK, so I remove this below line but then I still get the problem of state not updating
-        // this.setState({course:response.data})
-
-        // console.log(response.status)
-        // if (response.status === 202) {
-        //   console.log("sup")
-        //   // this.props.history.push('/courses/') // return the user to the courses catalogue page
-        //   // This isn't needed. Without it the user still gets sent to the catalogue page!!
-        //   // Why? How is that happening? Some auto feature of react?
-        //
-        // }
-
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // console.log(error);
       })
       .then(function () {
         // always executed
@@ -153,9 +135,6 @@ class CourseDetail extends React.Component {
     let userProp = this.props.user;
     if(userProp.isloggedin === true) {
       if(userProp.id === courseId) {
-        // console.log(userProp.id);
-        // console.log(courseId);
-        // console.log("OK");
           return (
             <React.Fragment>
               <NavLink className="button" to='/' onClick={this.deleteCourse.bind(this)}>Delete Course</NavLink>
@@ -163,11 +142,11 @@ class CourseDetail extends React.Component {
             </React.Fragment>
           )
       } else {
-        console.log("Logged in user != course owner ");
-        console.log("Why does this still fire if logged in user === course owner?");
+        // console.log("Logged in user != course owner ");
+        // console.log("Why does this still fire if logged in user === course owner?");
       }
     } else {
-      console.log("No logged in user");
+      // console.log("No logged in user");
     }
   }
 

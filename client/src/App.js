@@ -8,6 +8,11 @@ import {
   Switch
 } from 'react-router-dom';
 
+// I was using
+// import { BrowserRouter as Router, Route } from 'react-router'
+// instead of:
+// import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 
 // Components
 import Header from './components/Header';
@@ -125,8 +130,13 @@ class App extends Component {
 
 
 
-
   render() {
+  // I could never get this below injeted into any routes...
+  // let props1 = {};
+  //   props1.foo = {...this.state};
+  //   props1.bar = "Elephants";
+  // var component = <Component {...props} />;
+
     return (
       <BrowserRouter>
         <div className="App">
@@ -134,10 +144,22 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/courses", "/squirtle"]} component={Catalogue} />
 
-            <PrivateRoute
-              exact path="/courses/create"
-              render={(props) => (<CreateCourse {...this.props} {...props} {...this.state} signIn={this.signIn}/>)}
-            />
+            {/* Old style */}
+            {/*
+              <Route
+                exact path="/courses/create"
+                render={(props1) => (<CreateCourse {...props1} {...this.state}/>)}
+              />
+              */}
+
+
+            {/* New style
+              <Route exact path="/courses/create" component = {CreateCourse} />
+              */}
+
+              {/* I've no idea if the line below is an anti-pattern or whatever, but at least everything is getting through.
+                */}
+            <PrivateRoute props={this.state} exact path="/courses/create" component={(props) => <CreateCourse props={[this.state, props]}/>} />
 
             <Route
               exact path="/courses/:id"
@@ -145,10 +167,14 @@ class App extends Component {
             />
 
             {/* <Route exact path="/courses/:id/update" component={UpdateCourse} /> */}
-            <PrivateRoute
-              exact path="/courses/:id/update"
-              render={(props) => (<UpdateCourse {...this.props} {...props} {...this.state}/>)}
-            />
+
+            {/*
+              <PrivateRoute
+                exact path="/courses/:id/update"
+                render={(props) => (<UpdateCourse {...this.props} {...props} {...this.state}/>)}
+              />
+              */}
+            <PrivateRoute props={this.state} exact path="/courses/:id/update" component={(props) => <UpdateCourse props={[this.state, props]}/>} />
 
 
 
@@ -177,6 +203,15 @@ class App extends Component {
     );
   }
 }
+
+
+// New style for HoC
+// <PrivateRoute  component= {CreateCourse}
+//               exact path="/courses/create"
+//             />
+
+
+
 
 // <Route
 //   path={`${this.props.match.url}view/:postId`}

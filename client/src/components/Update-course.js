@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 
 
-
-
 class UpdateCourse extends React.Component {
 
 // Initialise local state:
@@ -27,19 +25,15 @@ class UpdateCourse extends React.Component {
   };
 
     componentDidMount() {
-      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
-      // console.log(this)
+      const { match: {params} } = this.props.props[1]; // take the params from the match object and pass in below to dynamically generate url
       axios.get(`http://localhost:5000/api/courses/${params.id}`)
-
         .then( (response) => {
           // handle success
           this.setState({course:response.data})
           this.setState({user:response.data.user})
-          // console.log(this.state.course);
         })
         .catch(function (error) {
           // handle error
-          console.log(error);
         })
         .then(function () {
           // always executed
@@ -80,11 +74,8 @@ class UpdateCourse extends React.Component {
     // Define event handlers as a method on the class (using two different approaches)
     handleSubmit(event) {
       event.preventDefault();
-      // console.log(this.state);
-      // console.log(this.props);
-      // console.log("PUT fired");
 
-      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
+      const { match: {params} } = this.props.props[1]; // take the params from the match object and pass in below to dynamically generate url
       // Send a POST request
       axios({
         method: 'put',
@@ -93,51 +84,42 @@ class UpdateCourse extends React.Component {
           "title":this.state.course.title,
           "description":this.state.course.description,
           "user":this.state.user._id,
-          "materialsNeeded":this.props.materialsNeeded,
-          "estimatedTime":this.props.estimatedTime
+          "materialsNeeded":this.state.course.materialsNeeded,
+          "estimatedTime":this.state.course.estimatedTime
         },
         auth: {
-          username: this.props.auth.username,
-          password: this.props.auth.password
+          username: this.props.props[0].auth.username,
+          password: this.props.props[0].auth.password
         }
       }).then( (response) => {
         // handle success
-        console.log(response);
+
         // The below does nothing. So how is Catalogue rendering with a fresh state?
         // this.setState({course:response.data})
 
-        // Is Catalogue making an axios call?
-
-        console.log("PUT Success")
-        console.log("Does the below actually return anything?!")
-        // No, it's doesn't so how is state getting updated?
-        console.log(response);
-        this.props.history.push('/courses/') // return the user to the courses catalogue page
+        this.props.props[1].history.push('/courses/') // return the user to the courses catalogue page
 
       })
       .catch( (error) => {
         // handle error
-        console.log("PUT Error")
-        console.log(error.response.data.errors);
-        // console.log(error.response.data);
-        // console.log(error.response.data.message);
-
         this.setState({
           errors: error.response.data.errors
         });
       })
       .then(function () {
         // always executed
-        console.log("This always fires, apparently")
+        // console.log("This always fires, apparently")
       });
 
     }
 
     handleCancel = event => {
       event.preventDefault();
-      const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
-      const { history } = this.props;
+      const { match: {params} } = this.props.props[1]; // take the params from the match object and pass in below to dynamically generate url
+      const { history } = this.props.props[1];
       history.push(`/courses/${params.id}`)
+
+
     }
 
   render() {

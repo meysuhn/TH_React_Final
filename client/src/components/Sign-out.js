@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Sign-Out component doesn't render anything
+// Sign-Out component isn't meant to render anything, only remove auth data and redirect.
 
 class SignOut extends React.Component {
   // This method sits on App.js. It's called from here when user clicks 'Sign-out' in Header.js
@@ -11,7 +11,6 @@ class SignOut extends React.Component {
   callSignOutMethod(props) {
     this.props.signOut(this.props) // Pass props here so App.js has access to histroy object for push method.
   }
-
 
 
   render() {
@@ -38,10 +37,6 @@ export default SignOut;
 //   // Why? - Because it's  forcing a browser reload and as your data doesn't persist...
 //   // I think this is a bit of a crass hack and would need to be improved later.
 //   window.location.replace('/')
-//
-//   // What would be a more elegant solution
-//   // It would need to have access to the auth state, delete it.
-//   // Then it needs to redirect to "/" via React.
 // }
 //
 //

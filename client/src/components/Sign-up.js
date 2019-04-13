@@ -55,12 +55,6 @@ class SignUp extends React.Component {
   // Define event handlers as a method on the class (using two different approaches)
   handleSubmit(event) {
     event.preventDefault();
-    // console.log(this.state);
-    // console.log(this.props);
-    // console.log("POST fired");
-
-
-
     // Send a POST request
     // This route doesn't require auth. It's a new user.
     axios({
@@ -73,17 +67,12 @@ class SignUp extends React.Component {
         password:this.state.user.passwordCheck,
       },
 
-
     }).then( (response) => {
       // handle success
       this.props.history.push('/signin'); // Push the user to the sign in page for them to sign in.
     })
     .catch( (error) => {
       // handle error
-      console.log(error.response.data.errors);
-      // Rebuild API side so pattern is consistent on client side.
-
-
       this.setState({
         errors: error.response.data.errors
       });
@@ -103,7 +92,6 @@ class SignUp extends React.Component {
       // But this is why you've to check for this.state.errors first, as when practising with ProtectedRoutes turned off the 401's caused below to bug out
       if (this.state.errors.length > 0) {
         const errors = this.state.errors;
-
         let mappedErrors = errors.map(error => (
           <li key={error.toString()}>{error}</li>
         ));

@@ -26,37 +26,20 @@ class SignIn extends React.Component {
       ));
   }
 
-// For some reason the below wouldn't work, but I'm just gonna send them back to "/" without any fancy stuff.
-  // handleCancel = event => {
-  //   event.preventDefault();
-  //       this.props.history.push('/courses/') // return the user to the courses catalogue page
-  //       // push is a method on the history object.
-  //     }
-  // This would go on the button: onClick={this.handleCancel.bind(this)}
-
-
   handleSubmit = event => {
-    // console.log(this.state)
-    // console.log(this.props)
     event.preventDefault();
     let userInput = {"email": this.state.user.email, "password": this.state.user.password}
-    // console.log(userInput)
     this.props.signIn(userInput, this.props) // Pass props here so App.js has access to histroy object for push method.
 
   };
 
   render() {
     let validationHTML;
-
-
     if (this.props.errors.length > 0) {
-      console.log("hola")
       // This error code only works for 400 errors. If user not signed in (401) then my api routes it differently
       // Due to '<ProtectedRoute> feature however users not signed in wouldn't have access to Create-course page anyway
       // But this is why you've to check for this.state.errors first, as when practising with ProtectedRoutes turned off the 401's caused below to bug out
       const errors = this.props.errors;
-      console.log(errors);
-
       validationHTML =
       <div>
         <h2 className="validation--errors--label">Validation errors</h2>

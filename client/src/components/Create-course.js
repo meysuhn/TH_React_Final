@@ -25,7 +25,7 @@ class CreateCourse extends React.Component {
 // then overwrite only those properties stated with the ones we're passing. new data
 // prevState https://gist.github.com/klikstermkd/e56e120ad9559aa44dfeaa3b13cfb25d
 
-// these are the same as UpdateCourse. It's exactly the same process.
+
 titleChange = (event) => { // when there's a change pass in the event object
     const value = event.target.value;
     this.setState( (prevState) =>(
@@ -55,17 +55,13 @@ materialsNeededChange = (event) => {
 
 handleCancel = event => {
   event.preventDefault();
-      this.props.history.push('/courses/') // return the user to the courses catalogue page
+      this.props.props[1].history.push('/courses/') // return the user to the courses catalogue page
       // push is a method on the history object.
     }
 
 // Define event handlers as a method on the class (using two different approaches)
 handleSubmit(event) {
   event.preventDefault();
-  // console.log(this.state);
-  // console.log(this.props);
-  console.log("POST fired");
-
 
   // Send a POST request
   axios({
@@ -79,33 +75,27 @@ handleSubmit(event) {
       user:this.state.user._id,
     },
     auth: {
-      username: this.props.auth.username,
-      password: this.props.auth.password
+      username: this.props.props[0].auth.username,
+      password: this.props.props[0].auth.password
     }
 
 
   }).then( (response) => {
     // handle success
-    this.setState({course:response.data})
-    console.log("POST Success")
-    console.log(response);
-    // console.log(this.state.course);
-    this.props.history.push('/courses/') // return the user to the courses catalogue page
+    // this.setState({course:response.data})
+
+    this.props.props[1].history.push('/courses/') // return the user to the courses catalogue page
   })
   .catch( (error) => {
     // handle error
-    console.log("POST Error")
-    console.log(error.response);
-    console.log(error.response.data);
-
-    this.setState({ // add error messages to state so they're available to render method below.
-      errors: error.response.data.errors
-    });
-
-
+    if (error) {
+      this.setState({ // add error messages to state so they're available to render method below.
+        errors: error.response.data.errors
+      });
+    }
   })
   .then(function (err) {
-    console.log("This always fires, apparently")
+    // console.log("This always fires, apparently")
   });
 
 }
