@@ -5,24 +5,21 @@ import {
   } from "react-router-dom";
 
 
-    const PrivateRoute = ({ component: Component, ...rest  }) => (
-
-     <Route {...rest} render={(props) => (
-       rest.props.user.isloggedin === true // this is essentially an 'if' statement
-         ? <Component {...props}/> // (do this)
-         : <Redirect to='/signin' /> // (otherwise do this)
-     )} />
-   )
-
-
-
-  export default PrivateRoute;
+// This component wraps around two private routes declared in App.js.
+  // If user not signed in then access to those two pages is prevented.
+const PrivateRoute = ({ component: Component, ...rest  }) => ( // See notes below for explanation of this.
+   <Route {...rest} render={(props) => (
+     rest.props.user.isloggedin === true // this is essentially an 'if' statement
+       ? <Component {...props}/> // (do this)
+       : <Redirect to='/signin' /> // (otherwise do this)
+   )} />
+)
 
 
+export default PrivateRoute;
 
 
 
-//
 // // NOTES
 // // <PrivateRoute> is not native React Router behaviour. It's just a design pattern that happens to be very handy for this specific purpose.
 // // So I think you could name it anything, like <BingoRoute> and it would still work.

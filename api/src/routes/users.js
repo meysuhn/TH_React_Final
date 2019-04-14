@@ -34,9 +34,7 @@ router.post('/', (req, res, next) => {
 
     } else {
     User.create(req.body, (err, user) => {
-      console.log("hi"); //this part is OK.
       if (user) {// If a user has been created
-        console.log("guten tag")
         if (!user.emailAddress || !user.firstName || !user.lastName || !user.password) {
 
           // if any fields missing then reject...
@@ -44,7 +42,7 @@ router.post('/', (req, res, next) => {
           // Is it because Mongoose is automatically rejecting and thus sending to Else clause alpha below?
           // In which case this is entirely redundant?
           // Build out the error validation further below and fix this bit up later.
-          console.log('this doesnt work');
+          // console.log('this doesnt work');
           // return next(err);
 
         }

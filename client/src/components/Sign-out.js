@@ -1,29 +1,35 @@
 import React from 'react';
 
-// Sign-Out component isn't meant to render anything, only remove auth data and redirect.
 
 class SignOut extends React.Component {
-  // This method sits on App.js. It's called from here when user clicks 'Sign-out' in Header.js
-  // Nothing is rendered in this componenet, only the callSignOutMethod is called.
-  // It calls the signOut method on App.js (that it's given access to via App.js's <Routes>)
-  // Auth and User global state in App.js are reset and passed in to setState
-  // User is redirected to /Courses
-  callSignOutMethod(props) {
+
+  componentDidMount() {
     this.props.signOut(this.props) // Pass props here so App.js has access to histroy object for push method.
   }
 
-
   render() {
-    this.callSignOutMethod() // Called on mounting.
-    return (
-      <React.Fragment></React.Fragment> // Allows for component to load (and run callSignOutMethod without rendering anything
-    )
+    return (null); // Render nothing.
   }
 }
 
-
 export default SignOut;
 
+
+// NOTES
+// Sign-Out component isn't meant to render anything, only remove auth data and redirect.
+
+// This method sits on App.js. It's called from here when user clicks 'Sign-out' in Header.js
+// Nothing is rendered in this componenet, only the callSignOutMethod is called.
+// It calls the signOut method on App.js (that it's given access to via App.js's <Routes>)
+// Auth and User global state in App.js are reset and passed in to setState
+// User is redirected to /Courses
+
+// this.callSignOutMethod(this.props) // This line used to sit inside the render() above.
+// Placing the above line of code in render() caused React errors. Why? well because...
+/* Functional components are expected to be pure functions, i.e. contain no side effects,
+and the above line in render() provides side effects.
+Side effects are supposed to be applied after the component is mounted, that's the purpose of componentDidMount hook.
+*/
 
 
 

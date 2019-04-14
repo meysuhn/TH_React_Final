@@ -82,8 +82,6 @@ handleSubmit(event) {
 
   }).then( (response) => {
     // handle success
-    // this.setState({course:response.data})
-
     this.props.props[1].history.push('/courses/') // return the user to the courses catalogue page
   })
   .catch( (error) => {

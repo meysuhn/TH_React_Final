@@ -11,12 +11,12 @@ class Catalogue extends React.Component {
       courses: '',
     };
 
+// Get All Courses on mount and store in state.
   componentDidMount(prevProps, prevState) {
-
     axios.get('http://localhost:5000/api/courses')
       .then( (response) => {
         // handle success
-        this.setState({courses:response.data}) // but what state is it actually setting? It's blank.
+        this.setState({courses:response.data})
       })
       .catch(function (error) {
         // handle error
@@ -27,7 +27,7 @@ class Catalogue extends React.Component {
       });
   }
 
-
+  // Take courses from state and build individual courses.
   displayAllCourses(){
     if(this.state.courses) {
       return this.state.courses.map( course => {

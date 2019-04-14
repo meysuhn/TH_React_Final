@@ -30,7 +30,7 @@ class SignUp extends React.Component {
       ));
   }
 
-  emailChange = (event) => { // when there's a change pass in the event object
+  emailChange = (event) => {
       const value = event.target.value;
       this.setState( (prevState) =>(
           {user: {...prevState.user, emailAddress:value}}
@@ -51,9 +51,10 @@ class SignUp extends React.Component {
       ));
   }
 
+
   // POST
-  // Define event handlers as a method on the class (using two different approaches)
-  handleSubmit(event) {
+  handleSubmit = (event) => {
+    let userInput = {email: this.state.user.emailAddress, password: this.state.user.password};
     event.preventDefault();
     // Send a POST request
     // This route doesn't require auth. It's a new user.
@@ -69,13 +70,21 @@ class SignUp extends React.Component {
 
     }).then( (response) => {
       // handle success
-      this.props.history.push('/signin'); // Push the user to the sign in page for them to sign in.
+        if (response.status === 201) {
+          // pass the user input object with new user's details to the signIn method.
+          this.props.signIn(userInput, this.props) // Pass props here so App.js has access to history object for push method.
+        }
+
+        // Or if you'd prefer to push them to signin page instead use:
+        // this.props.history.push('/signin'); // Push the user to the sign in page for them to sign in.
     })
     .catch( (error) => {
       // handle error
-      this.setState({
-        errors: error.response.data.errors
-      });
+      if(error) {
+        this.setState({
+          errors: error.response.data.errors
+        });
+      }
     })
     .then(function () {
       // always executed
@@ -92,6 +101,7 @@ class SignUp extends React.Component {
       // But this is why you've to check for this.state.errors first, as when practising with ProtectedRoutes turned off the 401's caused below to bug out
       if (this.state.errors.length > 0) {
         const errors = this.state.errors;
+        // Loop over errors in state and display an <li> for each
         let mappedErrors = errors.map(error => (
           <li key={error.toString()}>{error}</li>
         ));

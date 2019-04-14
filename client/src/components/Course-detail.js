@@ -15,7 +15,6 @@ class CourseDetail extends React.Component {
     };
 
 
-
   componentDidMount() {
     const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
     axios.get(`http://localhost:5000/api/courses/${params.id}`)
@@ -26,7 +25,6 @@ class CourseDetail extends React.Component {
       })
       .catch(function (error) {
         // handle error
-        // console.log(error);
       })
       .then(function () {
         // always executed
@@ -39,18 +37,19 @@ class CourseDetail extends React.Component {
   //     [event.target.name]: event.target.value
   //   })
   // }
-
   // onChange={event => this.detectChange(e)}
 
+
+  // Display the individual course from state.
   displayCourseDetail(){
     if(this.state.course) {
-            return (
-              <div className="course--header">
-                <h4 className="course--label">Course</h4>
-                <h3 className="course--title">{this.state.course.title}</h3>
-                <p>By {this.state.course.user.firstName} {this.state.course.user.lastName}</p>
-              </div>
-            )
+      return (
+        <div className="course--header">
+          <h4 className="course--label">Course</h4>
+          <h3 className="course--title">{this.state.course.title}</h3>
+          <p>By {this.state.course.user.firstName} {this.state.course.user.lastName}</p>
+        </div>
+      )
     } else {
     }
   }
@@ -108,7 +107,7 @@ class CourseDetail extends React.Component {
     }
   }
 
-
+  // Delete course
   deleteCourse(event) {
     event.preventDefault();
       const { match: {params} } = this.props; // take the params from the match object and pass in below to dynamically generate url
@@ -121,7 +120,6 @@ class CourseDetail extends React.Component {
       })
       .catch(function (error) {
         // handle error
-        // console.log(error);
       })
       .then(function () {
         // always executed
